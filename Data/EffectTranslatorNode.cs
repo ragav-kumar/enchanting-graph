@@ -1,4 +1,6 @@
-﻿namespace EnchantingGraph.Data;
+﻿using EnchantingGraph.Effects;
+
+namespace EnchantingGraph.Data;
 
 public record EffectTranslatorNode : INode
 {

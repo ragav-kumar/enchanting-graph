@@ -3,6 +3,7 @@
 public record NodePathElement
 {
     public required INode Node { get; init; }
+    public bool IsAltPath { get; init; } = false;
     public List<INode>? NextNodes { get; init; } = null;
     public List<INode>? AltNextNodes { get; init; } = null;
     

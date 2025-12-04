@@ -1,4 +1,5 @@
-﻿using EnchantingGraph.Data;
+﻿using System.Text;
+using EnchantingGraph.Data;
 
 namespace EnchantingGraph;
 
@@ -7,7 +8,9 @@ public class GraphParser
     public List<NodePathElement> Graph { get; }
     public List<List<INode>> Paths { get; }
 
-    public GraphParser(List<NodePathElement> graph)
+    public static GraphParser Parse(List<NodePathElement> graph) => new(graph);
+
+    private GraphParser(List<NodePathElement> graph)
     {
         Graph = graph;
         if (!TryValidateInvariants(out string? errorMessage))
@@ -15,7 +18,7 @@ public class GraphParser
             throw new InvalidDataException(errorMessage);
         }
         Paths = [];
-        ExtractPaths(Graph);
+        ExtractPaths();
 
         if (Paths.Count == 0)
         {
@@ -23,9 +26,9 @@ public class GraphParser
         }
     }
 
-    private void ExtractPaths(List<NodePathElement> graph)
+    private void ExtractPaths()
     {
-        NodePathElement source = graph.Single(o => o.Node is SourceNode);
+        NodePathElement source = Graph.Single(o => o.Node is SourceNode);
         List<INode> currentPath = [];
         HashSet<INode> currentSet = [];
 
@@ -39,13 +42,19 @@ public class GraphParser
 
             if (pathElement.Node is PortNode)
             {
-                Paths.Add([..currentPath, pathElement.Node]);
+                Paths.Add([
+                    ..currentPath,
+                    pathElement.Node
+                ]);
                 return;
             }
 
+            currentPath.Add(pathElement.Node);
+            currentSet.Add(pathElement.Node);
+
             foreach (INode node in pathElement.AllNext())
             {
-                NodePathElement nextPathElement = graph.Single(o => o.Node == node);
+                NodePathElement nextPathElement = Graph.Single(o => o.Node.Equals(node));
                 Dfs(nextPathElement);
             }
 
@@ -82,5 +91,22 @@ public class GraphParser
         // However, this can't be tested here.
         errorMessage = null;
         return true;
+    }
+
+    public override string ToString()
+    {
+        StringBuilder builder = new();
+        for (int index = 0; index < Paths.Count; index++)
+        {
+            List<INode> path = Paths[index];
+            builder.AppendLine($"Path {index + 1}, Length {path.Count}:");
+            foreach (INode node in path)
+            {
+                builder.AppendLine(node.ToString());
+            }
+            builder.AppendLine();
+        }
+        
+        return builder.ToString();
     }
 }

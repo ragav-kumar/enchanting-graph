@@ -2,6 +2,15 @@
 
 using EnchantingGraph;
 
+Console.WriteLine("Single path");
+Console.WriteLine(GraphParser.Parse(InitializerData.SinglePath));
 
-GraphParser parser = new(InitializerData.SinglePath);
-Console.WriteLine(parser.Graph);
+GraphParser splitParser = GraphParser.Parse(InitializerData.SingleSplit);
+Console.WriteLine("Single split");
+Console.WriteLine(splitParser);
+
+Console.WriteLine("Effects of Path 1 in Single split");
+Console.WriteLine(PathInterpreter.Interpret(splitParser.Paths[0]));
+
+Console.WriteLine("Effects of Path 2 in Single split");
+Console.WriteLine(PathInterpreter.Interpret(splitParser.Paths[1]));
