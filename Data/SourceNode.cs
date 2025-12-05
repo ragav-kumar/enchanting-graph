@@ -1,21 +1,33 @@
-﻿using EnchantingGraph.Effects;
-
-namespace EnchantingGraph.Data;
+﻿namespace EnchantingGraph.Data;
 
 /// <summary>
 /// The starting point of every enchantment. There can only be one in a given enchantment.
-/// Emits mana in packets of the provided size.
+/// Emits packets across all connected inputs. Teh net mana per tick is defined by its total Elements
 /// </summary>
-public record SourceNode : INode
+public class SourceNode : NodeBase
 {
-    public required Element Element { get; init; }
-    public required float PacketSize { get; init; }
-    public bool SupportsAltPath => false;
-
-    public bool TryAppend(Enchantment enchantment)
+    public ElementDictionary Elements { get; }
+    
+    public SourceNode(ElementDictionary elements)
     {
-        enchantment.Element = Element;
-        enchantment.Magnitude = PacketSize;
-        return true;
+        Elements = elements;
+        ConnectedInputs = new FixedList<bool>(0);
+        ConnectedOutputs = new FixedList<bool>(6);
     }
+
+    public override bool Equals(NodeBase? other)
+    {
+        if (other is null) return false;
+        if (ReferenceEquals(this, other)) return true;
+        if (other is SourceNode node)
+        {
+            return node.ConnectedInputs.Equals(ConnectedInputs)
+                && node.ConnectedOutputs.Equals(ConnectedOutputs)
+                && node.Elements.Equals(Elements);
+        }
+        return false;
+    }
+
+    public override Dictionary<int, Packet>? Simulate(Dictionary<int, Packet> inputs) =>
+        EmitPacketsEvenly(new Packet { Elements = Elements });
 }

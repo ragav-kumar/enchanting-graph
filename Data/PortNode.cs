@@ -5,19 +5,41 @@ namespace EnchantingGraph.Data;
 /// <summary>
 /// The end point of an enchantment. The Type is a primary determinant of the enchantment.
 /// </summary>
-public record PortNode : INode
+public class PortNode : NodeBase
 {
     public PortType Type { get; init; }
-    public bool SupportsAltPath => false;
-    
-    public bool TryAppend(Enchantment enchantment)
+
+    public PortNode(PortType type)
     {
-        if (enchantment.Mode == EffectMode.Passive && Type == PortType.Target)
+        Type = type;
+        ConnectedInputs = new FixedList<bool>(4);
+        ConnectedOutputs = FixedList<bool>.From([true]);
+    }
+
+    public override bool Equals(NodeBase? other)
+    {
+        if (other is null) return false;
+        if (ReferenceEquals(this, other)) return true;
+        if (other is PortNode node)
         {
-            return false;
+            return node.ConnectedInputs.Equals(ConnectedInputs)
+                && node.ConnectedOutputs.Equals(ConnectedOutputs)
+                && node.Type == Type;
         }
-        
-        enchantment.Port = Type;
-        return true;
+        return false;
+    }
+
+    public override Dictionary<int, Packet>? Simulate(Dictionary<int, Packet> inputs)
+    {
+        Packet packet = inputs.Sum();
+        if (packet.Elements.Magnitude < 0.001f)
+        {
+            return null;
+        }
+        packet.Port = Type;
+        return new Dictionary<int, Packet>
+        {
+            [0] = packet
+        };
     }
 }

@@ -2,18 +2,7 @@
 
 public record NodePathElement
 {
-    public required INode Node { get; init; }
-    public bool IsAltPath { get; init; } = false;
-    public List<INode>? NextNodes { get; init; } = null;
-    public List<INode>? AltNextNodes { get; init; } = null;
-    
-    public List<INode> AllNext() {
-        List<INode> next = NextNodes ?? [];
-        if (Node.SupportsAltPath && AltNextNodes != null)
-        {
-            return next.Concat(AltNextNodes).ToList();
-        }
-
-        return next;
-    }
+    public required NodeBase Node { get; init; }
+    public List<NodeBase>? InputNodes { get; init; } = null;
+    public List<NodeBase>? OutputNodes { get; init; } = null;
 }

@@ -3,9 +3,33 @@
 /// <summary>
 /// Activated manually on keyword.
 /// </summary>
-public record TriggerNode : INode
+public class TriggerNode : NodeBase
 {
-    public required Keyword Keyword { get; init; }
-    public required float MaxPacketSize { get; init; }
-    public bool SupportsAltPath => false;
+    public Keyword Keyword { get; }
+
+    public TriggerNode(Keyword keyword)
+    {
+        Keyword = keyword;
+        ConnectedInputs = new FixedList<bool>(1);
+        ConnectedOutputs = new FixedList<bool>(1);
+    }
+
+    public override bool Equals(NodeBase? other)
+    {
+        if (other is null) return false;
+        if (ReferenceEquals(this, other)) return true;
+        if (other is TriggerNode node)
+        {
+            return node.ConnectedInputs.Equals(ConnectedInputs)
+                && node.ConnectedOutputs.Equals(ConnectedOutputs)
+                && node.Keyword.Equals(Keyword);
+        }
+        return false;
+    }
+
+    public override Dictionary<int, Packet>? Simulate(Dictionary<int, Packet> inputs)
+    {
+        Packet packet = inputs.Sum();
+        return EmitPacketsEvenly(packet with { Keyword = Keyword });
+    }
 }

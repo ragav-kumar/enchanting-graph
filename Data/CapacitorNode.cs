@@ -1,27 +1,51 @@
-﻿using EnchantingGraph.Effects;
-
-namespace EnchantingGraph.Data;
+﻿namespace EnchantingGraph.Data;
 
 /// <summary>
 /// Accumulates smaller packets into bigger ones, but with a lower rate.
 /// Effectively gives the enchantment a cooldown time, in exchange for higher peaks.
 /// </summary>
-public record CapacitorNode : INode
+public class CapacitorNode : NodeBase
 {
-    public required Element Element { get; init; }
-    public required float PacketSize { get; init; }
-    public bool SupportsAltPath => false;
+    public float PacketSize { get; }
+    private ElementDictionary currentStorage_ = new();
 
-    public bool TryAppend(Enchantment enchantment)
+    public CapacitorNode(float packetSize)
     {
-        if (enchantment.Element != Element)
+        PacketSize = packetSize;
+        ConnectedInputs = new FixedList<bool>(1);
+        ConnectedOutputs = new FixedList<bool>(1);
+    }
+
+    public override bool Equals(NodeBase? other)
+    {
+        if (other is null) return false;
+        if (ReferenceEquals(this, other)) return true;
+        if (other is CapacitorNode node)
         {
-            return false;
+            return Math.Abs(node.PacketSize - PacketSize) < 0.001f
+                && node.ConnectedInputs.Equals(ConnectedInputs)
+                && node.ConnectedOutputs.Equals(ConnectedOutputs)
+                && node.currentStorage_ == currentStorage_;
         }
+        return false;
+    }
+
+    public override Dictionary<int, Packet>? Simulate(Dictionary<int, Packet> inputs)
+    {
+        Packet totalInput = inputs.Sum();
+        InvalidNodePlacementException.ThrowIfEffectSet(totalInput.Effect);
         
-        float multiplier = PacketSize / enchantment.Magnitude;
-        enchantment.Magnitude = PacketSize;
-        enchantment.CooldownTime += multiplier;
-        return true;
+        currentStorage_ += totalInput.Elements;
+        if (currentStorage_.Magnitude >= PacketSize)
+        {
+            ElementDictionary packet = currentStorage_.Packet(PacketSize);
+            currentStorage_ -= packet;
+            return EmitPacketsEvenly(new Packet
+            {
+                IsBurst = true,
+                Elements = packet,
+            });
+        }
+        return null;
     }
 }
