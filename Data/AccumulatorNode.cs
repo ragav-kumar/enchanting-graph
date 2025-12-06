@@ -32,8 +32,6 @@ public class AccumulatorNode : NodeBase
             return node.currentStorage_ == currentStorage_
                 && node.IsDischarging == IsDischarging
                 && Math.Abs(node.Capacity - Capacity) < 0.001f
-                && node.ConnectedInputs.Equals(ConnectedInputs)
-                && node.ConnectedOutputs.Equals(ConnectedOutputs)
                 && Math.Abs(node.PacketSize - PacketSize) < 0.001f;
         }
 

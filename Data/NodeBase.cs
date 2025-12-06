@@ -1,9 +1,9 @@
 ﻿namespace EnchantingGraph.Data;
 
-public abstract class NodeBase : IEquatable<NodeBase>
+public abstract class NodeBase
 {
-    public required FixedList<bool> ConnectedInputs { get; init; }
-    public required FixedList<bool> ConnectedOutputs { get; init; }
+    public FixedList<bool> ConnectedInputs { get; init; }
+    public FixedList<bool> ConnectedOutputs { get; init; }
 
     protected Dictionary<int, Packet>? EmitPacketsEvenly(Packet packet)
     {

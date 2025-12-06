@@ -1,4 +1,5 @@
-﻿using EnchantingGraph.Effects;
+﻿using System.Text;
+using EnchantingGraph.Effects;
 
 namespace EnchantingGraph.Data;
 
@@ -9,4 +10,7 @@ public struct Packet
     public PortType? Port { get; set; }
     public EnchantmentEffect? Effect { get; set; }
     public Keyword? Keyword { get; set; }
+
+    public override string ToString() =>
+        $"Elements={Elements}, Keyword={Keyword}, Port={Port}, Effect={Effect}, IsBurst={IsBurst}";
 }

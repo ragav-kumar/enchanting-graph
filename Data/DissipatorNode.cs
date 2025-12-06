@@ -23,9 +23,7 @@ public class DissipatorNode : NodeBase
         if (ReferenceEquals(this, other)) return true;
         if (other is DissipatorNode node)
         {
-            return node.ConnectedInputs.Equals(ConnectedInputs)
-                && node.ConnectedOutputs.Equals(ConnectedOutputs)
-                && node.Element == Element
+            return node.Element == Element
                 && Math.Abs(node.Loss - Loss) < 0.001f;
         }
         return false;

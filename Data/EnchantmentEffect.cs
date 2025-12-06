@@ -14,6 +14,7 @@
 public enum EnchantmentEffect
 {
     /// <summary>
+    /// Effects related to emitting mana into the environment
     /// Structure:
     ///   - Instantaneous: An unfocused AoE explosion blasting everything around you
     ///   - Passive: Lengthen the blade or otherwise make the dangerous bit of the weapon bigger.
@@ -28,6 +29,7 @@ public enum EnchantmentEffect
     /// </summary>
     Emission = 1,
     /// <summary>
+    /// Effects related to imbuing mana onto things, thereby infusing them with power.
     /// Structure:
     ///   - Instantaneous: Converts weapon damage to the specified element. Very cheap.
     ///   - Passive: Applies elemental damage bonus to attacks with this weapon.

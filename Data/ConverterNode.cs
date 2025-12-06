@@ -27,9 +27,7 @@ public class ConverterNode : NodeBase
         if (ReferenceEquals(this, other)) return true;
         if (other is ConverterNode node)
         {
-            return node.ConnectedInputs.Equals(ConnectedInputs)
-                && node.ConnectedOutputs.Equals(ConnectedOutputs)
-                && node.InElement == InElement
+            return node.InElement == InElement
                 && node.OutElement == OutElement
                 && Math.Abs(node.Efficiency - Efficiency) < 0.001f;
         }

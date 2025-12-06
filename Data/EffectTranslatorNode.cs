@@ -23,9 +23,7 @@ public class EffectTranslatorNode : NodeBase
         if (ReferenceEquals(this, other)) return true;
         if (other is EffectTranslatorNode node)
         {
-            return node.ConnectedInputs.Equals(ConnectedInputs)
-                && node.ConnectedOutputs.Equals(ConnectedOutputs)
-                && node.Effect == Effect
+            return node.Effect == Effect
                 && node.Element == Element
                 && Math.Abs(node.Efficiency - Efficiency) < 0.001f;
         }

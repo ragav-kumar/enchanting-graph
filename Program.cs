@@ -1,16 +1,31 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using EnchantingGraph;
+using EnchantingGraph.Graph;
+
+const int numTicks = 100;
+const int breakLine = 50;
 
 Console.WriteLine("Single path");
-Console.WriteLine(GraphParser.Parse(InitializerData.SinglePath));
-
-GraphParser splitParser = GraphParser.Parse(InitializerData.SingleSplit);
+RunSimulation(InitializerData.SinglePath, "single path");
+Console.WriteLine();
 Console.WriteLine("Single split");
-Console.WriteLine(splitParser);
+RunSimulation(InitializerData.SingleSplit, "single split");
+return;
 
-Console.WriteLine("Effects of Path 1 in Single split");
-Console.WriteLine(PathInterpreter.Interpret(splitParser.Paths[0]));
-
-Console.WriteLine("Effects of Path 2 in Single split");
-Console.WriteLine(PathInterpreter.Interpret(splitParser.Paths[1]));
+void RunSimulation(IEnumerable<NodePathElement> graph, string name)
+{
+    Simulator simulator = new(graph);
+    Console.WriteLine($"Simulating {name}...");
+    for (int i = 1; i <= numTicks; i++)
+    {
+        simulator.Tick();
+        Console.Write(".");
+        if (i % breakLine == 0)
+        {
+            Console.WriteLine();
+        }
+    }
+    Console.WriteLine("Simulation completed.");
+    Console.WriteLine($"Simulation ran for {numTicks} ticks.");
+    Console.WriteLine(simulator.Results());
+}

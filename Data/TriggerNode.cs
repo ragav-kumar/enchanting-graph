@@ -20,9 +20,7 @@ public class TriggerNode : NodeBase
         if (ReferenceEquals(this, other)) return true;
         if (other is TriggerNode node)
         {
-            return node.ConnectedInputs.Equals(ConnectedInputs)
-                && node.ConnectedOutputs.Equals(ConnectedOutputs)
-                && node.Keyword.Equals(Keyword);
+            return node.Keyword.Equals(Keyword);
         }
         return false;
     }

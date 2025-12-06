@@ -21,9 +21,7 @@ public class SourceNode : NodeBase
         if (ReferenceEquals(this, other)) return true;
         if (other is SourceNode node)
         {
-            return node.ConnectedInputs.Equals(ConnectedInputs)
-                && node.ConnectedOutputs.Equals(ConnectedOutputs)
-                && node.Elements.Equals(Elements);
+            return node.Elements.Equals(Elements);
         }
         return false;
     }

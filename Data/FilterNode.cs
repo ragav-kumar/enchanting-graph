@@ -24,9 +24,7 @@ public class FilterNode : NodeBase
         if (ReferenceEquals(this, other)) return true;
         if (other is FilterNode node)
         {
-            return node.ConnectedInputs.Equals(ConnectedInputs)
-                && node.ConnectedOutputs.Equals(ConnectedOutputs)
-                && Math.Abs(node.Efficiency - Efficiency) < 0.001f
+            return Math.Abs(node.Efficiency - Efficiency) < 0.001f
                 && node.FilterElement == FilterElement;;
         }
         return false;

@@ -22,9 +22,7 @@ public class PortNode : NodeBase
         if (ReferenceEquals(this, other)) return true;
         if (other is PortNode node)
         {
-            return node.ConnectedInputs.Equals(ConnectedInputs)
-                && node.ConnectedOutputs.Equals(ConnectedOutputs)
-                && node.Type == Type;
+            return node.Type == Type;
         }
         return false;
     }

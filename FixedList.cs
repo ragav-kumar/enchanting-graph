@@ -17,16 +17,29 @@ public sealed class FixedList<T> : IList<T>, IEquatable<FixedList<T>>
         }
     }
 
+    public void AssignFrom(IEnumerable<T> values)
+    {
+        List<T> valueList = values.ToList();
+        if (valueList.Count != _items.Length)
+        {
+            throw new ArgumentException("Lengths do not match.");
+        }
+
+        for (int i = 0; i < valueList.Count; i++)
+        {
+            _items[i] = valueList[i];
+        }
+    }
+
     public static FixedList<T> From(IEnumerable<T> values)
     {
         List<T> valueList = values.ToList();
         FixedList<T> list = new(valueList.Count);
 
-        int i = 0;
-        foreach (T value in valueList)
+        for (int i = 0; i < valueList.Count; i++)
         {
+            T value = valueList[i];
             list[i] = value;
-            i++;
         }
 
         return list;

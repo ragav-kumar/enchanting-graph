@@ -23,8 +23,6 @@ public class CapacitorNode : NodeBase
         if (other is CapacitorNode node)
         {
             return Math.Abs(node.PacketSize - PacketSize) < 0.001f
-                && node.ConnectedInputs.Equals(ConnectedInputs)
-                && node.ConnectedOutputs.Equals(ConnectedOutputs)
                 && node.currentStorage_ == currentStorage_;
         }
         return false;

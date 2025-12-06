@@ -1,4 +1,6 @@
-﻿namespace EnchantingGraph.Data;
+﻿using System.Text;
+
+namespace EnchantingGraph.Data;
 
 public class ElementDictionary : Dictionary<Element, float>, IEquatable<ElementDictionary>
 {
@@ -12,6 +14,20 @@ public class ElementDictionary : Dictionary<Element, float>, IEquatable<ElementD
 
     public ElementDictionary(int capacity) : base(capacity)
     {
+    }
+
+    public new float this[Element index]
+    {
+        get
+        {
+            if (!TryGetValue(index, out float result))
+            {
+                result = 0f;
+            }
+
+            return result;
+        }
+        set => base[index] = value;
     }
 
     public static ElementDictionary operator +(ElementDictionary dict, float scalar) => scalar + dict;
@@ -204,5 +220,19 @@ public class ElementDictionary : Dictionary<Element, float>, IEquatable<ElementD
             newDict[pair.Key] = pair.Value;
         }
         return newDict;
+    }
+
+    public override string ToString()
+    {
+        string[] elementStrings = this
+            .Where(o => o.Value > 0.001f)
+            .Select(o => $"{o.Key}: {MathF.Round(o.Value, 2)}")
+            .ToArray();
+        if (elementStrings.Length == 0)
+        {
+            return "{}";
+        }
+
+        return $"{{ {string.Join(", ", elementStrings)} }}";
     }
 }
