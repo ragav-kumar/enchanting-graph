@@ -7,9 +7,9 @@ public static class InitializerData
 {
     private static SourceNode WaterSource => new(new ElementDictionary
     {
-        [Element.Water] = 7f,
+        [Element.Water] = 7.0f,
         [Element.Neutral] = 2.6f,
-        [Element.Earth] = .3f,
+        [Element.Earth] = 0.3f,
         [Element.Gray] = 0.1f,
     });
 

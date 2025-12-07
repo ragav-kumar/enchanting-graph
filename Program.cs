@@ -18,7 +18,7 @@ void RunSimulation(IEnumerable<NodePathElement> graph, string name)
     Console.WriteLine($"Simulating {name}...");
     for (int i = 1; i <= numTicks; i++)
     {
-        simulator.Tick();
+        simulator.Tick(i);
         Console.Write(".");
         if (i % breakLine == 0)
         {

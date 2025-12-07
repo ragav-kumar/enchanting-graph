@@ -5,9 +5,10 @@ namespace EnchantingGraph.Graph;
 
 public class Simulator
 {
-    public HashSet<NodePathElement> Graph { get; }
-    private List<Packet> emitted_;
-    private NodePathElement source_;
+    private HashSet<NodePathElement> Graph { get; }
+    private readonly List<Packet> emitted_;
+    private readonly NodePathElement source_;
+    readonly Dictionary<NodeBase, Dictionary<int, Packet>> pendingInputs_ = [];
     
     public Simulator(IEnumerable<NodePathElement> data)
     {
@@ -80,11 +81,10 @@ public class Simulator
         return false;
     }
 
-    public void Tick()
+    public void Tick(int tickNumber)
     {
         Queue<NodePathElement> queue = [];
         HashSet<NodeBase> visited = [];
-        Dictionary<NodeBase, Dictionary<int, Packet>> pendingInputs = [];
         
         // Always start from the source.
         queue.Enqueue(source_);
@@ -106,10 +106,11 @@ public class Simulator
             }
             
             // We're tracking the inputs to this node in the pendingInputs dictionary.
-            if (!pendingInputs.TryGetValue(current.Node, out Dictionary<int, Packet>? packets))
+            if (!pendingInputs_.TryGetValue(current.Node, out Dictionary<int, Packet>? packets))
             {
                 packets = [];
             }
+            
             // Simulate
             Dictionary<int, Packet>? result = current.Node.Simulate(packets);
             
@@ -134,12 +135,12 @@ public class Simulator
                     
                     NodePathElement outputElement = Graph.Single(o => o.Node.Equals(outputNode));
                     int index = outputElement.InputNodes.IndexOf(current.Node);
-                    if (!pendingInputs.TryGetValue(outputNode, out Dictionary<int, Packet>? inputPackets))
+                    if (!pendingInputs_.TryGetValue(outputNode, out Dictionary<int, Packet>? inputPackets))
                     {
                         inputPackets = [];
                     }
                     inputPackets[index] = packet;
-                    pendingInputs[outputNode] = inputPackets;
+                    pendingInputs_[outputNode] = inputPackets;
                 }
             }
             

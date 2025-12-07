@@ -11,6 +11,26 @@ public struct Packet
     public EnchantmentEffect? Effect { get; set; }
     public Keyword? Keyword { get; set; }
 
-    public override string ToString() =>
-        $"Elements={Elements}, Keyword={Keyword}, Port={Port}, Effect={Effect}, IsBurst={IsBurst}";
+    private string EffectString() => Effect switch
+    {
+        EnchantmentEffect.Emission => "emitted",
+        EnchantmentEffect.Infusion => "infused",
+        EnchantmentEffect.Absorption => "absorbed",
+        EnchantmentEffect.Creation => "created",
+        EnchantmentEffect.Destruction => "destroyed",
+        _ => throw new ArgumentOutOfRangeException()
+    };
+
+    public override string ToString()
+    {
+        string mode = IsBurst ? "Burst" : "Passively";
+        string message = $"{mode} {EffectString()} {Elements} into the {Port} port";
+        
+        if (Keyword is not null)
+        {
+            message += $", on keyword \"{Keyword}\"";
+        }
+
+        return message;
+    }
 }

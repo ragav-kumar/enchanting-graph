@@ -1,8 +1,6 @@
-﻿using System.Text;
+﻿namespace EnchantingGraph.Data;
 
-namespace EnchantingGraph.Data;
-
-public class ElementDictionary : Dictionary<Element, float>, IEquatable<ElementDictionary>
+public class ElementDictionary : Dictionary<Element, float>
 {
     public ElementDictionary()
     {
@@ -30,16 +28,14 @@ public class ElementDictionary : Dictionary<Element, float>, IEquatable<ElementD
         set => base[index] = value;
     }
 
-    public static ElementDictionary operator +(ElementDictionary dict, float scalar) => scalar + dict;
-    
-    public static ElementDictionary operator +(float scalar, ElementDictionary dict)
+    public static ElementDictionary operator +(ElementDictionary dict, float scalar)
     {
         ArgumentNullException.ThrowIfNull(dict);
 
         ElementDictionary result = new(dict);
         foreach (KeyValuePair<Element, float> pair in result)
         {
-            result[pair.Key] = scalar + pair.Value;
+            result[pair.Key] = pair.Value + scalar;
         }
         
         return result;
@@ -58,16 +54,14 @@ public class ElementDictionary : Dictionary<Element, float>, IEquatable<ElementD
         return result;
     }
 
-    public static ElementDictionary operator *(ElementDictionary dict, float scalar) => scalar * dict;
-    
-    public static ElementDictionary operator *(float scalar, ElementDictionary dict)
+    public static ElementDictionary operator *(ElementDictionary dict, float scalar)
     {
         ArgumentNullException.ThrowIfNull(dict);
 
         ElementDictionary result = new(dict);
         foreach (KeyValuePair<Element, float> pair in result)
         {
-            result[pair.Key] = scalar * pair.Value;
+            result[pair.Key] = pair.Value *  scalar;
         }
         
         return result;
@@ -86,16 +80,15 @@ public class ElementDictionary : Dictionary<Element, float>, IEquatable<ElementD
         return result;
     }
 
-    public static ElementDictionary operator -(ElementDictionary dict, float scalar) => -1 * (scalar - dict);
     
-    public static ElementDictionary operator -(float scalar, ElementDictionary dict)
+    public static ElementDictionary operator -(ElementDictionary dict, float scalar)
     {
         ArgumentNullException.ThrowIfNull(dict);
 
         ElementDictionary result = new(dict);
         foreach (KeyValuePair<Element, float> pair in result)
         {
-            result[pair.Key] = scalar - pair.Value;
+            result[pair.Key] = pair.Value - scalar;
         }
         
         return result;
@@ -125,7 +118,7 @@ public class ElementDictionary : Dictionary<Element, float>, IEquatable<ElementD
         ElementDictionary result = new(dict);
         foreach (KeyValuePair<Element, float> pair in result)
         {
-            result[pair.Key] = scalar / pair.Value;
+            result[pair.Key] /= scalar;
         }
         
         return result;
