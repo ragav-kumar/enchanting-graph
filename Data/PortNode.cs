@@ -9,12 +9,13 @@ public class PortNode : NodeBase
 {
     public PortType Type { get; init; }
 
-    public PortNode(PortType type)
+    public PortNode(PortType type) : base(4,1)
     {
         Type = type;
-        ConnectedInputs = new FixedList<bool>(4);
-        ConnectedOutputs = FixedList<bool>.From([true]);
+        ConnectedOutputs.AssignFrom([true]);
     }
+
+    public override string ToString() => $"Port: {Type}";
 
     public override bool Equals(NodeBase? other)
     {

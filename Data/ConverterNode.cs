@@ -12,14 +12,14 @@ public class ConverterNode : NodeBase
     public Element OutElement { get; }
     public float Efficiency { get; }
 
-    public ConverterNode(Element inElement, Element outElement, float efficiency)
+    public ConverterNode(Element inElement, Element outElement, float efficiency) : base(3,3)
     {
         InElement = inElement;
         OutElement = outElement;
         Efficiency = efficiency;
-        ConnectedInputs = new FixedList<bool>(3);
-        ConnectedOutputs = new FixedList<bool>(3);
     }
+
+    public override string ToString() => $"Converter: {InElement} to {OutElement} @ {MathF.Round(100 * Efficiency)}% efficiency";
 
     public override bool Equals(NodeBase? other)
     {

@@ -7,10 +7,10 @@ public static class InitializerData
 {
     private static SourceNode WaterSource => new(new ElementDictionary
     {
-        [Element.Water] = 7.0f,
+        [Element.Water]   = 7.0f,
         [Element.Neutral] = 2.6f,
-        [Element.Earth] = 0.3f,
-        [Element.Gray] = 0.1f,
+        [Element.Earth]   = 0.3f,
+        [Element.Gray]    = 0.1f,
     });
 
     private static CapacitorNode Capacitor => new(50f);
@@ -69,7 +69,7 @@ public static class InitializerData
             .AsReadOnly();
 
         GraphBuilder singleSplitBuilder = new();
-        singleSplitBuilder
+        /*singleSplitBuilder
             .Add(WaterSource)
             .WithChild(ConvertWaterToAir, parentIndex: 0, childIndex: 0)
             .WithChild(ConvertAirToFire, parentIndex: 0, childIndex: 0)
@@ -80,7 +80,20 @@ public static class InitializerData
         singleSplitBuilder
             .Add(ConvertWaterToMetal, parent: WaterSource, parentIndex: 1, childIndex: 0)
             .WithChild(EmitMetal, parentIndex: 0, childIndex: 0)
+            .WithChild(StructurePort, parentIndex: 0, childIndex: 0);*/
+        
+        singleSplitBuilder
+            .Add(WaterSource)
+            .WithChild(ConvertWaterToMetal, parentIndex: 0, childIndex: 0)
+            .WithChild(EmitMetal, parentIndex: 0, childIndex: 0)
             .WithChild(StructurePort, parentIndex: 0, childIndex: 0);
+        
+        singleSplitBuilder
+            .Add(ConvertWaterToAir, parent: WaterSource, parentIndex: 1, childIndex: 0)
+            .WithChild(ConvertAirToFire, parentIndex: 0, childIndex: 0)
+            .WithChild(Capacitor, parentIndex: 0, childIndex: 0)
+            .WithChild(InfuseFire, parentIndex: 0 , childIndex: 0)
+            .WithChild(TargetPort, parentIndex: 0, childIndex: 0);
         
         SingleSplit =
             singleSplitBuilder

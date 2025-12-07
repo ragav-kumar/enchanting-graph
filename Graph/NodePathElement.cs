@@ -15,6 +15,13 @@ public class NodePathElement
         OutputNodes = new FixedList<NodeBase?>(node.ConnectedOutputs.Count);
     }
 
+    public override string ToString()
+    {
+        int inCount = InputNodes.Count(o => o != null);
+        int outCount = OutputNodes.Count(o => o != null);
+        return $"{Node} [{inCount} in, {outCount} out]";
+    }
+
     public void ConnectInput(NodeBase node, int index)
     {
         if (index < 0 || index >= InputNodes.Count)

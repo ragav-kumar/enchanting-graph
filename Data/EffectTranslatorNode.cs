@@ -8,14 +8,14 @@ public class EffectTranslatorNode : NodeBase
     public Element Element { get; }
     public float Efficiency { get; }
 
-    public EffectTranslatorNode(EnchantmentEffect effect, Element element, float efficiency)
+    public EffectTranslatorNode(EnchantmentEffect effect, Element element, float efficiency) : base(4,1)
     {
         Effect = effect;
         Element = element;
         Efficiency = efficiency;
-        ConnectedInputs = new FixedList<bool>(4);
-        ConnectedOutputs = new FixedList<bool>(1);
     }
+
+    public override string ToString() => $"Effect Translator: Effect={Effect}, Element={Element}, at {MathF.Round(100 * Efficiency)}% efficiency";
 
     public override bool Equals(NodeBase? other)
     {

@@ -9,11 +9,9 @@ public class CapacitorNode : NodeBase
     public float PacketSize { get; }
     private ElementDictionary currentStorage_ = new();
 
-    public CapacitorNode(float packetSize)
+    public CapacitorNode(float packetSize) : base(1,1)
     {
         PacketSize = packetSize;
-        ConnectedInputs = new FixedList<bool>(1);
-        ConnectedOutputs = new FixedList<bool>(1);
     }
 
     public override bool Equals(NodeBase? other)
@@ -46,4 +44,6 @@ public class CapacitorNode : NodeBase
         }
         return null;
     }
+
+    public override string ToString() => $"Capacitor: PacketSize={PacketSize}, Currently storing {currentStorage_}";
 }

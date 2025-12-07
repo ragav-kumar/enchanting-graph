@@ -9,13 +9,13 @@ public class DissipatorNode : NodeBase
     public Element Element { get; }
     public float Loss { get; }
 
-    public DissipatorNode(Element element, float loss)
+    public DissipatorNode(Element element, float loss) : base(1,1)
     {
         Element = element;
         Loss = loss;
-        ConnectedInputs = new FixedList<bool>(1);
-        ConnectedOutputs = new FixedList<bool>(1);
     }
+
+    public override string ToString() => $"Dissipator: Element={Element}, with {MathF.Round(100 * Loss)}% loss";
 
     public override bool Equals(NodeBase? other)
     {

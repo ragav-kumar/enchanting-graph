@@ -1,9 +1,9 @@
 ﻿namespace EnchantingGraph.Data;
 
-public abstract class NodeBase
+public abstract class NodeBase(int inputCount, int outputCount)
 {
-    public FixedList<bool> ConnectedInputs { get; init; }
-    public FixedList<bool> ConnectedOutputs { get; init; }
+    public FixedList<bool> ConnectedInputs { get; } = new(inputCount);
+    public FixedList<bool> ConnectedOutputs { get; } = new(outputCount);
 
     protected Dictionary<int, Packet>? EmitPacketsEvenly(Packet packet)
     {

@@ -15,12 +15,21 @@ public class AccumulatorNode : NodeBase
     public bool IsDischarging { get; private set; }
     private ElementDictionary currentStorage_ = new();
 
-    public AccumulatorNode(float packetSize, float capacity)
+    public AccumulatorNode(float packetSize, float capacity) : base(3,1)
     {
         PacketSize = packetSize;
         Capacity = capacity;
-        ConnectedInputs = new FixedList<bool>(3);
-        ConnectedOutputs = new FixedList<bool>(1);
+    }
+
+    public override string ToString()
+    {
+        string message = $"Accumulator: PacketSize={PacketSize}, Capacity={Capacity}, Currently storing {currentStorage_}";
+        if (IsDischarging)
+        {
+            message += "; Currently discharging";
+        }
+
+        return message;
     }
 
     public override bool Equals(NodeBase? other)

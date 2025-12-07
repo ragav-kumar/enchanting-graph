@@ -10,12 +10,10 @@ public class FilterNode : NodeBase
     public Element FilterElement { get; }
     public float Efficiency { get; }
 
-    public FilterNode(Element filterElement, float efficiency)
+    public FilterNode(Element filterElement, float efficiency) : base(1,2)
     {
         FilterElement = filterElement;
         Efficiency = efficiency;
-        ConnectedInputs = new FixedList<bool>(1);
-        ConnectedOutputs = new FixedList<bool>(2);
     }
 
     public override bool Equals(NodeBase? other)

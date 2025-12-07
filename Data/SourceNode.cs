@@ -7,12 +7,10 @@
 public class SourceNode : NodeBase
 {
     public ElementDictionary Elements { get; }
-    
-    public SourceNode(ElementDictionary elements)
+
+    public SourceNode(ElementDictionary elements) : base(0, 6)
     {
         Elements = elements;
-        ConnectedInputs = new FixedList<bool>(0);
-        ConnectedOutputs = new FixedList<bool>(6);
     }
 
     public override bool Equals(NodeBase? other)
@@ -28,4 +26,6 @@ public class SourceNode : NodeBase
 
     public override Dictionary<int, Packet>? Simulate(Dictionary<int, Packet> inputs) =>
         EmitPacketsEvenly(new Packet { Elements = Elements });
+
+    public override string ToString() => $"Source: {Elements}";
 }

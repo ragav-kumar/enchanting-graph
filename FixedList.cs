@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Text;
 
 namespace EnchantingGraph;
 
@@ -125,5 +126,14 @@ public sealed class FixedList<T> : IList<T>, IEquatable<FixedList<T>>
     public override int GetHashCode()
     {
         return _items.GetHashCode();
+    }
+
+    public override string ToString()
+    {
+        string[] strings = _items
+            .Where(item => item != null)
+            .Select((item, i) => $"{i}: {item}")
+            .ToArray();
+        return $"[{string.Join(", ", strings)}]";
     }
 }

@@ -7,12 +7,12 @@ public class TriggerNode : NodeBase
 {
     public Keyword Keyword { get; }
 
-    public TriggerNode(Keyword keyword)
+    public TriggerNode(Keyword keyword) : base(1,1)
     {
         Keyword = keyword;
-        ConnectedInputs = new FixedList<bool>(1);
-        ConnectedOutputs = new FixedList<bool>(1);
     }
+
+    public override string ToString() => $"Trigger: On Keyword \"{Keyword}\"";
 
     public override bool Equals(NodeBase? other)
     {
